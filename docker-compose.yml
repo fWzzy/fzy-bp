@@ -5,20 +5,20 @@ networks:
 
 volumes:
   dbdata:
-    name: mrnn-db
+    name: fzy-db
 
 services:
   frontend:
     build:
-      context: ./mrnn-fe
+      context: ./fzy-fe
       dockerfile: Dockerfile
       target: development
       args:
         NODE_ENV: development
-    container_name: mrnn-fe
-    image: "${ORG_NAME}/mrnn-fe:${FE_BUILD_VERSION}"
+    container_name: fzy-fe
+    image: "${ORG_NAME}/fzy-fe:${FE_BUILD_VERSION}"
     volumes:
-      - './mrnn-fe:/app'
+      - './fzy-fe:/app'
       - '/app/node_modules'
     restart: unless-stopped
     networks:
@@ -31,18 +31,18 @@ services:
 
   backend:
     build:
-      context: ./mrnn-be
+      context: ./fzy-be
       dockerfile: Dockerfile
       target: development
       args:
         NODE_ENV: development
-    container_name: mrnn-be
-    image: "${ORG_NAME}/mrnn-be:${BE_BUILD_VERSION}"
+    container_name: fzy-be
+    image: "${ORG_NAME}/fzy-be:${BE_BUILD_VERSION}"
     restart: unless-stopped
     networks:
       - webnet
     volumes:
-      - "./mrnn-be/:/app"
+      - "./fzy-be/:/app"
       - /app/node_modules
     depends_on:
       - mariadb

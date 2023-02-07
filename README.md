@@ -20,8 +20,8 @@ The application allow users to store and retrieve records of their favorite book
   - [docker-compose](https://docs.docker.com/compose/install/)
 
 ## Run application
- - Prepare frontend env file `cp ./mrnn-fe/.env.example ./mrnn-fe/.env`
- - Prepare frontend env file `cp ./mrnn-be/.env ./mrnn-be/.env.development`
+ - Prepare frontend env file `cp ./fzy-fe/.env.example ./fzy-fe/.env`
+ - Prepare frontend env file `cp ./fzy-be/.env ./fzy-be/.env.development`
  - Start all container `docker-compose up -d`
  - Migrate backend database `docker-compose exec backend yarn mikro-orm migration:up`
 
