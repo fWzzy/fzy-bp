@@ -1,0 +1,6 @@
+[submodule "fzy-be"]
+	path = fzy-be
+	url = git@github.com:fWzzy/fzy-be.git
+[submodule "fzy-fe"]
+	path = fzy-fe
+	url = git@github.com:fWzzy/fzy-fe.git
