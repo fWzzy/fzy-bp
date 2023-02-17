@@ -18,6 +18,11 @@ The application allow users to store and retrieve records of their favorite book
 ## Prerequisites
   - [Docker](https://docs.docker.com/get-docker/)
   - [docker-compose](https://docs.docker.com/compose/install/)
+  
+## Clone repos
+  - `git clone https://github.com/fWzzy/fzy-bp.git`
+  - `git submodule init`
+  - `git submodule update`
 
 ## Run application
  - Prepare frontend env file `cp ./fzy-fe/.env.example ./fzy-fe/.env`
