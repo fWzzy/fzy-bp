@@ -8,59 +8,41 @@ volumes:
     name: fzy-db
 
 services:
-  frontend:
-    build:
-      context: ./fzy-fe
-      dockerfile: Dockerfile
-      target: development
-      args:
-        NODE_ENV: development
-    container_name: fzy-fe
-    image: "${ORG_NAME}/fzy-fe:${FE_BUILD_VERSION}"
-    volumes:
-      - './fzy-fe:/app'
-      - '/app/node_modules'
-    restart: unless-stopped
-    networks:
-      - webnet
-    ports:
-      - 3002:3002
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-      - PORT=3002
 
-  backend:
+  kong:
     build:
-      context: ./fzy-be
+      context: ./kong
       dockerfile: Dockerfile
-      target: development
-      args:
-        NODE_ENV: development
-    container_name: fzy-be
-    image: "${ORG_NAME}/fzy-be:${BE_BUILD_VERSION}"
     restart: unless-stopped
-    networks:
-      - webnet
-    volumes:
-      - "./fzy-be/:/app"
-      - /app/node_modules
-    depends_on:
-      - mariadb
     ports:
-      - 3001:3000
-
-  mariadb:
-    image: mariadb:10
-    restart: unless-stopped
+      - "8000:8000"
+      - "8001:8001"
+      - "8443:8443"
     networks:
       - webnet
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${DB_DATABASE_NAME}
-      - MYSQL_USER=${DB_USERNAME}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=master123
     volumes:
-      - "dbdata:/var/lib/mysql"
+      - rabbit_data:/var/lib/rabbitmq
+    networks:
+      - webnet
+  redis:
+    image: redis:latest
+    restart: always
+    command: redis-server --save 20 1 --loglevel warning --requirepass master123
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - webnet
   
   pma:
     image: phpmyadmin/phpmyadmin
